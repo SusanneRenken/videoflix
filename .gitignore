@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.so
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+.env/
+.venv/
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+
+# Ignore Django app migrations (keep __init__.py so apps remain packages)
+**/migrations/__pycache__/
+
+# Media / Static
+media/
+staticfiles/
+
+# IDEs / Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# pytest / coverage
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
