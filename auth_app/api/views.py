@@ -114,3 +114,47 @@ class LogoutView(APIView):
         response.delete_cookie("refresh_token", path="/")
 
         return response
+
+
+class RefreshTokenView(TokenRefreshView):
+
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.COOKIES.get("refresh_token")
+
+        if refresh_token is None:
+            return Response(
+                {"detail": "Refresh token not found."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = self.get_serializer(data={"refresh": refresh_token})
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception:
+            return Response(
+                {"detail": "Refresh token invalid."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        access_token = serializer.validated_data.get("access")
+
+        response = Response(
+            {
+                "detail": "Token refreshed",
+                "access": access_token,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+        secure_flag = not getattr(settings, "DEBUG", False)
+
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            secure=secure_flag,
+            samesite="Lax",
+        )
+
+        return response
